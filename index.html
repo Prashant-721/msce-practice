@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSCE Practice – Paper II STD 6–8</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--surface:#fff;--s2:#f8f9fa;--border:#dee2e6;
+  --text:#212529;--t2:#495057;--t3:#868e96;
+  --accent:#1a56db;--acc-bg:#e8f0fe;
+  --green:#087f5b;--green-bg:#d3f9d8;
+  --red:#c92a2a;--red-bg:#ffe3e3;
+  --yellow:#e67700;--yellow-bg:#fff3bf;
+  --r:10px;--sh:0 2px 8px rgba(0,0,0,.08)
+}
+body{font-family:'Segoe UI',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.15);flex-wrap:wrap;gap:8px}
+.hbrand{display:flex;align-items:center;gap:12px}
+.hlogo{width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;border:1px solid rgba(255,255,255,.3)}
+.htitle{font-size:13px;font-weight:700;line-height:1.3}
+.hsub{font-size:11px;opacity:.75}
+.hmeta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:3px 9px;font-size:12px;font-weight:600}
+.timer{background:rgba(255,200,0,.2);border:1px solid rgba(255,200,0,.5);border-radius:6px;padding:3px 14px;font-size:16px;font-weight:700;font-family:'Courier New',monospace;color:#ffe082;min-width:80px;text-align:center}
+.timer.warn{background:rgba(255,80,0,.3);color:#ffab40}
+.hnav{display:flex;overflow-x:auto;padding:0 16px;gap:2px}
+.ntab{padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s}
+.ntab:hover{color:#fff}
+.ntab.active{color:#fff;border-bottom-color:#64b5f6}
+.ntab .tc{background:rgba(255,255,255,.15);border-radius:10px;padding:1px 6px;font-size:11px;margin-left:4px}
+.pbar-wrap{height:4px;background:rgba(255,255,255,.15)}
+.pbar{height:100%;background:#64b5f6;transition:width .4s;border-radius:0}
+.main{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+
+/* WELCOME */
+.wcard{background:var(--surface);border-radius:14px;padding:32px;box-shadow:var(--sh);border:1px solid var(--border);text-align:center;margin-bottom:20px}
+.wtitle{font-size:24px;font-weight:800;color:#1a237e;margin-bottom:6px}
+.wsub{color:var(--t2);margin-bottom:20px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0;text-align:left}
+.icard{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.icard .lbl{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.icard .val{font-size:15px;font-weight:700;margin-top:3px}
+.subjinfo{background:#f0f4ff;border-radius:10px;padding:14px;text-align:left;margin:14px 0;font-size:14px}
+.subjinfo div{margin-top:6px}
+.btn-start{background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;border:none;border-radius:var(--r);padding:14px 36px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(21,101,192,.35);transition:all .2s;margin-top:8px}
+.btn-start:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(21,101,192,.45)}
+.btn2{background:var(--surface);color:var(--accent);border:2px solid var(--accent);border-radius:var(--r);padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn2:hover{background:var(--acc-bg)}
+
+/* EXAM */
+.elayout{display:flex;gap:16px;align-items:flex-start}
+.emain{flex:1;min-width:0}
+.esidebar{width:210px;flex-shrink:0;position:sticky;top:108px}
+@media(max-width:680px){.elayout{flex-direction:column}.esidebar{width:100%;position:static}}
+.scard{background:var(--surface);border-radius:12px;padding:14px;box-shadow:var(--sh);border:1px solid var(--border);margin-bottom:12px}
+.stitle{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.qdot{width:32px;height:32px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--t2);transition:all .15s}
+.qdot:hover{border-color:var(--accent)}
+.qdot.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qdot.ok{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.qdot.bad{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.qdot.skip{background:var(--yellow-bg);border-color:var(--yellow);color:var(--yellow)}
+.smini .srow{display:flex;align-items:center;gap:6px;font-size:13px;margin-bottom:4px}
+.sdot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+.qcard{background:var(--surface);border-radius:14px;padding:24px;box-shadow:var(--sh);border:1px solid var(--border);margin-bottom:14px}
+.qhdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.qnum{min-width:40px;height:40px;background:#1a237e;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0}
+.qtag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px}
+.tm{background:#fff8e1;color:#e67700}.te{background:#e8f4fd;color:#1565c0}.tc{background:#fce4ec;color:#c2185b}.ts{background:#e8f5e9;color:#2e7d32}
+.qtext{font-size:17px;font-weight:600;line-height:1.55;color:var(--text);margin-bottom:4px}
+.qtrans{font-size:13px;color:var(--t3);margin-bottom:4px;font-style:italic}
+.qsimple{font-size:13px;color:var(--t3);background:#f8f9fa;border-left:3px solid #adb5bd;padding:5px 10px;border-radius:0 6px 6px 0;margin-top:5px;font-style:italic}
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.opt{display:flex;align-items:flex-start;gap:11px;padding:12px 14px;border:2px solid var(--border);border-radius:var(--r);cursor:pointer;background:var(--surface);transition:all .15s;text-align:left;font-size:15px;line-height:1.5;color:var(--text);font-family:inherit;width:100%}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--acc-bg)}
+.opt .ol{min-width:28px;height:28px;border-radius:50%;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;transition:all .15s}
+.opt.sel{border-color:var(--accent);background:var(--acc-bg)}
+.opt.sel .ol{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt.cor{border-color:var(--green);background:var(--green-bg)}
+.opt.cor .ol{background:var(--green);color:#fff;border-color:var(--green)}
+.opt.wrg{border-color:var(--red);background:var(--red-bg)}
+.opt.wrg .ol{background:var(--red);color:#fff;border-color:var(--red)}
+.opt:disabled{cursor:default}
+.expbox{margin-top:14px;padding:14px 16px;border-radius:var(--r);border-left:4px solid;display:none;animation:si .3s ease}
+.expbox.cor{background:var(--green-bg);border-color:var(--green)}
+.expbox.wrg{background:var(--red-bg);border-color:var(--red)}
+.expbox.show{display:block}
+@keyframes si{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.etitle{font-weight:700;font-size:13px;margin-bottom:5px}
+.expbox.cor .etitle{color:var(--green)}.expbox.wrg .etitle{color:var(--red)}
+.etext{font-size:13px;color:var(--t2);line-height:1.6}
+.tipbox{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);padding:10px 14px;margin-top:12px;display:none}
+.tipbox.show{display:block}
+.tipttl{font-size:11px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.tiptext{font-size:13px;color:#78350f}
+.qnav{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:10px}
+.bnav{padding:9px 20px;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);color:var(--text);transition:all .15s;font-family:inherit}
+.bnav:hover{border-color:var(--accent);color:var(--accent)}
+.bnav:disabled{opacity:.4;cursor:default}
+.bsub{background:var(--accent);color:#fff;border-color:var(--accent);padding:9px 26px}
+.bsub:hover{background:#1248b3;border-color:#1248b3;color:#fff}
+
+/* RESULT */
+.rhero{background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;border-radius:14px;padding:32px;text-align:center;margin-bottom:18px;box-shadow:var(--sh)}
+.rscore{font-size:52px;font-weight:900;margin:6px 0}
+.rgrade{font-size:20px;font-weight:700;margin-top:6px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:18px}
+.rstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--sh)}
+.rval{font-size:26px;font-weight:800}
+.rlbl{font-size:12px;color:var(--t3);margin-top:2px}
+.rg{color:var(--green)}.rr{color:var(--red)}.ry{color:var(--yellow)}.rb{color:var(--accent)}
+.subj-bd{background:var(--surface);border-radius:12px;padding:18px;border:1px solid var(--border);box-shadow:var(--sh);margin-bottom:16px}
+.sbrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.sbrow:last-child{border-bottom:none}
+.sbname{font-weight:600;font-size:13px;width:120px;flex-shrink:0}
+.sbwrap{flex:1;background:var(--s2);border-radius:6px;height:9px;overflow:hidden}
+.sbbar{height:100%;border-radius:6px;transition:width 1s ease}
+.sbpct{font-size:13px;font-weight:700;width:38px;text-align:right}
+.revitem{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:9px;box-shadow:var(--sh)}
+.riq{font-weight:600;font-size:14px;margin-bottom:7px}
+.rians{font-size:13px;color:var(--t2)}
+.riexp{font-size:13px;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.stitle2{font-size:15px;font-weight:700;margin:18px 0 10px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#212529;color:#fff;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* LOADING spinner inline */
+.spin-wrap{display:flex;flex-direction:column;align-items:center;padding:40px;gap:14px}
+.spin{width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div class="hbrand">
+      <div class="hlogo">MS</div>
+      <div>
+        <div class="htitle">Maharashtra State Council of Examination, Pune</div>
+        <div class="hsub">PAPER II · STD. 6th–8th · Medium: मराठी</div>
+      </div>
+    </div>
+    <div class="hmeta">
+      <span class="badge">📅 28/06/2026</span>
+      <span class="badge">🕑 2:30–5:00 PM</span>
+      <div class="timer" id="timer">3:00:00</div>
+    </div>
+  </div>
+  <div class="hnav" id="hnav">
+    <button class="ntab active" data-s="all" onclick="jumpSubj('all')">सर्व <span class="tc" id="c-all">50</span></button>
+    <button class="ntab" data-s="marathi" onclick="jumpSubj('marathi')">मराठी <span class="tc" id="c-marathi">15</span></button>
+    <button class="ntab" data-s="english" onclick="jumpSubj('english')">English <span class="tc" id="c-english">10</span></button>
+    <button class="ntab" data-s="child" onclick="jumpSubj('child')">बाल विकास <span class="tc" id="c-child">15</span></button>
+    <button class="ntab" data-s="social" onclick="jumpSubj('social')">समाजशास्त्र <span class="tc" id="c-social">10</span></button>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0"></div></div>
+</header>
+
+<!-- WELCOME -->
+<div class="main" id="sw">
+  <div class="wcard">
+    <div style="font-size:52px;margin-bottom:10px">📝</div>
+    <div class="wtitle">MSCE Paper II – सराव परीक्षा</div>
+    <div class="wsub">STD. 6th to 8th · Marathi Medium · Pune District</div>
+    <div class="info-grid">
+      <div class="icard"><div class="lbl">परीक्षा दिनांक</div><div class="val">28 June 2026</div></div>
+      <div class="icard"><div class="lbl">वेळ</div><div class="val">2:30 – 5:00 PM</div></div>
+      <div class="icard"><div class="lbl">कालावधी</div><div class="val">3 तास</div></div>
+      <div class="icard"><div class="lbl">माध्यम</div><div class="val">मराठी</div></div>
+      <div class="icard"><div class="lbl">एकूण प्रश्न</div><div class="val">50 MCQ</div></div>
+      <div class="icard"><div class="lbl">एकूण गुण</div><div class="val">100</div></div>
+    </div>
+    <div class="subjinfo">
+      <strong>📚 विषय:</strong>
+      <div>📗 <strong>विषय 1:</strong> मराठी (भाषा 1) – 15 प्रश्न</div>
+      <div>📘 <strong>विषय 2:</strong> English (भाषा 2) – 10 प्रश्न</div>
+      <div>📕 <strong>विषय 3:</strong> बाल विकास व शिक्षणशास्त्र – 15 प्रश्न</div>
+      <div>📙 <strong>विषय 4:</strong> सामाजिक शास्त्र – 10 प्रश्न</div>
+    </div>
+    <button class="btn-start" onclick="startExam()">🎯 परीक्षा सुरू करा (Start Exam)</button>
+    <p style="margin-top:10px;font-size:12px;color:var(--t3)">प्रश्न त्वरित लोड होतात. तुमची प्रगती आपोआप जतन होते.</p>
+  </div>
+  <div id="hist-sec" style="display:none">
+    <div class="stitle2">📊 मागील प्रयत्न</div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div class="main" id="se" style="display:none">
+  <div class="elayout">
+    <div class="emain">
+      <div id="qa"></div>
+      <div class="qnav">
+        <button class="bnav" id="bprev" onclick="nav(-1)">← मागील</button>
+        <div style="display:flex;gap:8px">
+          <button class="bnav" onclick="skipQ()">वगळा ↷</button>
+          <button class="bnav bsub" id="bnext" onclick="nav(1)">पुढील →</button>
+        </div>
+      </div>
+      <div style="margin-top:10px;text-align:center">
+        <button class="btn2" onclick="confirmSubmit()" style="font-size:13px">परीक्षा सबमिट करा</button>
+      </div>
+    </div>
+    <div class="esidebar">
+      <div class="scard">
+        <div class="stitle">प्रश्न नेव्हिगेटर</div>
+        <div class="qgrid" id="qgrid"></div>
+      </div>
+      <div class="scard">
+        <div class="stitle">प्रगती</div>
+        <div class="smini">
+          <div class="srow"><div class="sdot" style="background:var(--green)"></div><span id="sc-ok">0 बरोबर</span></div>
+          <div class="srow"><div class="sdot" style="background:var(--red)"></div><span id="sc-wr">0 चुकीचे</span></div>
+          <div class="srow"><div class="sdot" style="background:var(--yellow)"></div><span id="sc-sk">0 वगळले</span></div>
+          <div class="srow"><div class="sdot" style="background:var(--border)"></div><span id="sc-lf">50 बाकी</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="main" id="sr" style="display:none"><div id="rc"></div></div>
+
+<script>
+// ── BUILT-IN QUESTION BANK (50 questions, no API needed) ─────────────────────
+const BANK = [
+// ── MARATHI (15) ─────────────────────────────────────────────────────────────
+{s:"marathi",sn:"मराठी",
+ q:"खालीलपैकी कोणता शब्द 'नाम' या प्रकारात येतो?",
+ qt:"Which of the following words is a 'Noun'?",
+ si:"नाम म्हणजे व्यक्ती, वस्तू, ठिकाण किंवा भाव यांचे नाव.",
+ o:["सुंदर","धावणे","पुस्तक","हळूहळू"],c:2,
+ e:"'पुस्तक' हे एक वस्तूचे नाव आहे, त्यामुळे ते नाम आहे. 'सुंदर' विशेषण आहे, 'धावणे' क्रियापद आहे, 'हळूहळू' क्रियाविशेषण आहे.",
+ t:"लक्षात ठेवा: नाम = नाव (व्यक्ती/वस्तू/ठिकाण/भाव). 'PVTB' trick: Person, Vastu, Thaikan, Bhav"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'मुलगा पळतो' या वाक्यातील क्रियापद कोणते?",
+ qt:"Identify the verb in the sentence 'मुलगा पळतो'.",
+ si:"क्रियापद म्हणजे कृती दाखवणारा शब्द.",
+ o:["मुलगा","पळतो","हे","त्या"],c:1,
+ e:"'पळतो' हा शब्द कृती (action) दाखवतो, म्हणून तो क्रियापद आहे. 'मुलगा' हे कर्ता (subject/नाम) आहे.",
+ t:"क्रियापद = कृती. 'काय केले?' असे विचारले की क्रियापद मिळते. येथे 'काय केले? → पळतो'"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'आनंद' या शब्दाचा विरुद्धार्थी शब्द कोणता?",
+ qt:"What is the antonym of 'आनंद' (Joy)?",
+ si:"विरुद्धार्थी म्हणजे उलट अर्थाचा शब्द.",
+ o:["सुख","खेद","हर्ष","उल्हास"],c:1,
+ e:"'आनंद' म्हणजे खूश असणे. त्याचा विरुद्धार्थी 'खेद' म्हणजे दुःख/वाईट वाटणे. सुख, हर्ष, उल्हास हे सर्व 'आनंद' चेच समानार्थी आहेत.",
+ t:"आनंद ↔ खेद. 'A' से Aanand (good), 'K' se Khed (bad feeling). A-K trick!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'चंद्र' या शब्दाचा समानार्थी शब्द कोणता?",
+ qt:"Which word is a synonym of 'चंद्र' (Moon)?",
+ si:"समानार्थी म्हणजे सारख्या अर्थाचा शब्द.",
+ o:["सूर्य","शशी","तारा","ग्रह"],c:1,
+ e:"'शशी' हा 'चंद्र' चा समानार्थी शब्द आहे. 'शशी' म्हणजे चंद्र. इतर पर्याय – सूर्य (sun), तारा (star), ग्रह (planet) वेगळ्या गोष्टी आहेत.",
+ t:"चंद्राची नावे: शशी, सोम, इंदू, राकेश, निशाकर. 'स-स-इ-रा-नि' लक्षात ठेवा!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"खालीलपैकी कोणते विरामचिन्ह प्रश्न विचारताना वापरतात?",
+ qt:"Which punctuation mark is used when asking a question?",
+ si:"प्रश्न विचारताना वाक्याच्या शेवटी एक खास चिन्ह लावतात.",
+ o:[".",",","?","!"],c:2,
+ e:"प्रश्नवाचक चिन्ह (?) हे प्रश्न विचारणाऱ्या वाक्याच्या शेवटी लावतात. उदा: 'तुझे नाव काय?' – येथे ? वापरतात.",
+ t:"? = प्रश्न (Question). उद्गारवाचक ! = आश्चर्य/भावना. पूर्णविराम . = वाक्य संपले."},
+
+{s:"marathi",sn:"मराठी",
+ q:"'मी शाळेत जातो' हे कोणत्या प्रकारचे वाक्य आहे?",
+ qt:"'मी शाळेत जातो' – what type of sentence is this?",
+ si:"वाक्याचे अनेक प्रकार असतात – विधान, प्रश्न, उद्गार, आज्ञा.",
+ o:["प्रश्नार्थक वाक्य","विधानार्थक वाक्य","उद्गारार्थक वाक्य","आज्ञार्थक वाक्य"],c:1,
+ e:"'मी शाळेत जातो' – हे एक साधे विधान (statement) आहे. यात प्रश्न नाही, आज्ञा नाही, उद्गार नाही. म्हणून हे विधानार्थक वाक्य आहे.",
+ t:"विधान = statement (माहिती देतो). प्र? = प्रश्न. ! = उद्गार. ये/जा/कर = आज्ञा."},
+
+{s:"marathi",sn:"मराठी",
+ q:"'पाणी' या शब्दाचे अनेकवचन काय होते?",
+ qt:"What is the plural of 'पाणी' (water)?",
+ si:"काही शब्दांचे एकवचन आणि अनेकवचन सारखेच असते.",
+ o:["पाण्या","पाण्यां","पाणी","पाणींनी"],c:2,
+ e:"'पाणी' हा शब्द अगण्य (uncountable) असल्यामुळे त्याचे अनेकवचन 'पाणी'च असते. वाक्यात वापर: 'अनेक ठिकाणी पाणी नाही.'",
+ t:"जे मोजता येत नाही ते अगण्य – पाणी, दूध, तेल यांचे एकवचन = अनेकवचन!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'सुंदर' हा शब्द व्याकरणात कोणत्या प्रकारात येतो?",
+ qt:"'सुंदर' (beautiful) belongs to which grammatical category?",
+ si:"नावाबद्दल अधिक माहिती सांगणारा शब्द म्हणजे विशेषण.",
+ o:["नाम","सर्वनाम","विशेषण","क्रियापद"],c:2,
+ e:"'सुंदर' हे विशेषण (adjective) आहे कारण ते नामाबद्दल – कसा/कशी/कसे – हे सांगते. उदा: 'सुंदर मुलगी' – येथे 'सुंदर' 'मुलगी' (नाम) बद्दल सांगतो.",
+ t:"विशेषण = नामाचे वर्णन. 'QUAS' trick: Quality (गुण), Uppercase, Appearance, Size – सर्व विशेषण!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"खालीलपैकी 'शुद्ध लेखन' कोणते आहे?",
+ qt:"Which of the following is the correct (शुद्ध) spelling?",
+ si:"मराठी शुद्धलेखनात आपल्या भाषेचे नियम पाळावे लागतात.",
+ o:["महाराष्ट","महाराष्ट्र","महराष्ट्र","महाराशट्र"],c:1,
+ e:"योग्य लेखन 'महाराष्ट्र' असे आहे. 'ट्र' हे जोडाक्षर असून ते बरोबर लिहिणे आवश्यक आहे. इतर पर्याय चुकीचे आहेत.",
+ t:"महा + राष्ट्र = महाराष्ट्र. 'राष्ट्र' मधील 'ष्ट्र' लक्षात ठेवा – ष + ट + र = ष्ट्र"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'रात्र' या शब्दाचे स्त्रीलिंग कोणते?",
+ qt:"'रात्र' (night) – what is its gender in Marathi?",
+ si:"मराठीत शब्दांचे लिंग असते – पुल्लिंग, स्त्रीलिंग, नपुसकलिंग.",
+ o:["पुल्लिंग","स्त्रीलिंग","नपुसकलिंग","सर्वलिंग"],c:1,
+ e:"'रात्र' हा शब्द स्त्रीलिंगी आहे. 'ती रात्र' असे म्हणतो. पुल्लिंग = 'तो', स्त्रीलिंग = 'ती', नपुसकलिंग = 'ते'.",
+ t:"'ती रात्र, ती सकाळ, ती संध्याकाळ' – वेळेचे शब्द बहुतेक स्त्रीलिंग असतात!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'तो पुस्तक वाचतो' या वाक्यातील कर्ता कोणता?",
+ qt:"Identify the subject (कर्ता) in 'तो पुस्तक वाचतो'.",
+ si:"'कर्ता' म्हणजे ज्याने कृती केली तो.",
+ o:["पुस्तक","वाचतो","तो","वाचणे"],c:2,
+ e:"'तो' हा कर्ता आहे कारण 'तो'च वाचण्याची कृती करतो. 'पुस्तक' हे कर्म (object) आहे. 'वाचतो' हे क्रियापद आहे.",
+ t:"'कोण करतो?' हा प्रश्न विचारला की कर्ता मिळतो. 'कोण वाचतो? → तो' = कर्ता!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"खालीलपैकी कोणता शब्द 'नदी' चा समानार्थी आहे?",
+ qt:"Which word is a synonym for 'नदी' (river)?",
+ si:"समानार्थी शब्द म्हणजे एकाच गोष्टीचे वेगवेगळे नाव.",
+ o:["तलाव","सरिता","समुद्र","ओढा"],c:1,
+ e:"'सरिता' हा 'नदी' चा समानार्थी शब्द आहे. तलाव = lake, समुद्र = sea, ओढा = stream (लहान नदी). नदीचे इतर समानार्थी: तटिनी, सिंधू, प्रवाहिनी.",
+ t:"नदीची समानार्थी: सरिता, तटिनी, निर्झरिणी. 'स-त-नि' – सरिता, तटिनी, निर्झरिणी!"},
+
+{s:"marathi",sn:"मराठी",
+ q:"'आम्ही' हे कोणत्या प्रकारचे सर्वनाम आहे?",
+ qt:"'आम्ही' (We) is what type of pronoun?",
+ si:"सर्वनाम = नामाऐवजी वापरला जाणारा शब्द. 'मी, तू, तो' इत्यादी.",
+ o:["प्रथम पुरुष एकवचन","प्रथम पुरुष अनेकवचन","द्वितीय पुरुष","तृतीय पुरुष"],c:1,
+ e:"'आम्ही' हे प्रथम पुरुष अनेकवचन आहे. मी → आम्ही/आपण (plural). 'मी' = एकवचन, 'आम्ही' = अनेकवचन, दोन्ही प्रथम पुरुष.",
+ t:"प्रथम पुरुष = स्वतःबद्दल. मी (1) → आम्ही (many). तू → तुम्ही. तो/ती → ते/त्या."},
+
+{s:"marathi",sn:"मराठी",
+ q:"'शाळा' या शब्दाचे अनेकवचन कोणते?",
+ qt:"What is the plural form of 'शाळा' (school)?",
+ si:"अनेकवचन म्हणजे एकापेक्षा जास्त.",
+ o:["शाळी","शाळे","शाळा","शाळांना"],c:2,
+ e:"'शाळा' (स्त्रीलिंग) चे अनेकवचन 'शाळा' असेच राहते परंतु विभक्तीत 'शाळे' (संबोधन) असू शकते. 'अनेक शाळा' हे सर्वात सामान्य उत्तर आहे.",
+ t:"आ-कारान्त स्त्रीलिंग शब्दांचे अनेकवचन बऱ्याचदा तेच राहते. शाळा → शाळा, माला → माला."},
+
+{s:"marathi",sn:"मराठी",
+ q:"'प्रकाश' या शब्दाचा अर्थ काय आहे?",
+ qt:"What does the word 'प्रकाश' mean?",
+ si:"या शब्दाचा अर्थ आपण दिव्याशी जोडू शकतो.",
+ o:["अंधार","उजेड/रोशनी","आवाज","वारा"],c:1,
+ e:"'प्रकाश' म्हणजे प्रकाशमान होणे, उजेड, रोशनी (Light). 'अंधार' हा त्याचा विरुद्धार्थी आहे. 'प्र + काश' = चमकणे, उजळणे.",
+ t:"प्र + काश = पूर्णपणे उजळणे. 'प्र' उपसर्ग = पूर्ण/जास्त. काश = चमक. सूर्यप्रकाश = सूर्याचा उजेड."},
+
+// ── ENGLISH (10) ─────────────────────────────────────────────────────────────
+{s:"english",sn:"English",
+ q:"Choose the correct plural of 'child':",
+ qt:"Choose the correct plural of 'child':",
+ si:"Some English words have irregular plurals – they don't just add 's'.",
+ o:["childs","childes","children","child's"],c:2,
+ e:"'Child' has an irregular plural: 'children'. We don't say 'childs'. Other irregular plurals: man→men, woman→women, tooth→teeth, foot→feet.",
+ t:"IRREGULAR PLURALS: Child→Children, Man→Men, Woman→Women, Tooth→Teeth. Remember: 'Old children have many teeth and men have big feet!'"},
+
+{s:"english",sn:"English",
+ q:"Which sentence is grammatically correct?",
+ qt:"Which sentence is grammatically correct?",
+ si:"Look for subject-verb agreement (singular/plural match).",
+ o:["She don't like mangoes.","She doesn't likes mangoes.","She doesn't like mangoes.","She not like mangoes."],c:2,
+ e:"With 'she/he/it' (3rd person singular), we use 'doesn't' (not 'don't') and the base verb 'like' (not 'likes'). Rule: doesn't + base verb.",
+ t:"He/She/It + DOESN'T + base verb. I/You/We/They + DON'T + base verb. 'She doesn't' is the key combo!"},
+
+{s:"english",sn:"English",
+ q:"The opposite (antonym) of 'honest' is:",
+ qt:"The opposite (antonym) of 'honest' is:",
+ si:"Antonym means the word with the opposite meaning.",
+ o:["truthful","sincere","dishonest","loyal"],c:2,
+ e:"The antonym of 'honest' is 'dishonest'. Adding prefix 'dis-' creates the opposite. Truthful and sincere are synonyms of honest. Loyal means faithful.",
+ t:"Prefix trick: dis- = opposite. Honest→Dishonest, Honest→Dishonest, Agree→Disagree, Appear→Disappear. 'DIS means DISSING (opposing)'!"},
+
+{s:"english",sn:"English",
+ q:"Identify the adjective in: 'The tall boy won the race.'",
+ qt:"Identify the adjective in: 'The tall boy won the race.'",
+ si:"Adjective = a word that describes a noun (person/place/thing).",
+ o:["boy","won","tall","race"],c:2,
+ e:"'Tall' is the adjective because it describes the noun 'boy'. Adjectives answer questions like: How big? What kind? Which one? Here: how is the boy? → tall.",
+ t:"ADJECTIVE describes a NOUN. Ask 'What KIND of [noun]?' Tall boy → tall describes boy. Beautiful flower, fast car, cold water – underline the describing word!"},
+
+{s:"english",sn:"English",
+ q:"Fill in the blank: 'She ___ to school every day.'",
+ qt:"Fill in the blank: 'She ___ to school every day.'",
+ si:"This is simple present tense. With 'she', the verb gets an 's' or 'es' ending.",
+ o:["go","going","goes","gone"],c:2,
+ e:"With third person singular (she/he/it), we add '-s' to the verb in simple present. 'She goes' is correct. 'Go' is used with I/You/We/They. 'Going' needs 'is'. 'Gone' is past participle.",
+ t:"Simple Present: I/You/We/They GO. He/She/It GOES. The 'S' goes with She/He/It – think: S + he/it/She → add S to verb!"},
+
+{s:"english",sn:"English",
+ q:"Which word is a preposition in: 'The cat is under the table.'?",
+ qt:"Which word is a preposition in: 'The cat is under the table.'?",
+ si:"A preposition shows the relationship between a noun and other words – usually position or direction.",
+ o:["cat","is","under","table"],c:2,
+ e:"'Under' is a preposition showing where the cat is in relation to the table. Common prepositions: in, on, under, above, between, behind, in front of, beside.",
+ t:"Prepositions = POSITION words! Think of a box: on the box, in the box, under the box, beside the box, behind the box. 'POSITION = Preposition'"},
+
+{s:"english",sn:"English",
+ q:"What is the past tense of 'write'?",
+ qt:"What is the past tense of 'write'?",
+ si:"'Write' is an irregular verb – its past tense doesn't follow the normal '-ed' rule.",
+ o:["writed","writing","written","wrote"],c:3,
+ e:"'Write' → 'Wrote' (simple past). 'Written' is the past participle (used with have/has). Irregular verbs: write/wrote/written, go/went/gone, take/took/taken.",
+ t:"Write-Wrote-Written. Remember: Write WROTE a letter that was Written. 3 forms! Other pattern: ride/rode/ridden, drive/drove/driven."},
+
+{s:"english",sn:"English",
+ q:"Choose the correct article: '___ apple a day keeps the doctor away.'",
+ qt:"Choose the correct article: '___ apple a day keeps the doctor away.'",
+ si:"Articles are 'a', 'an', 'the'. Use 'an' before vowel sounds.",
+ o:["A","An","The","No article"],c:1,
+ e:"We use 'An' before words that start with a vowel sound (a, e, i, o, u). 'Apple' starts with vowel 'A', so 'An apple' is correct. 'A' is used before consonant sounds.",
+ t:"AN + Vowel sound (A,E,I,O,U): An apple, An egg, An ice cream, An orange, An umbrella. 'An AEIOU' – just remember the vowels!"},
+
+{s:"english",sn:"English",
+ q:"Identify the type of sentence: 'What a beautiful flower!'",
+ qt:"Identify the type of sentence: 'What a beautiful flower!'",
+ si:"Look at the punctuation mark at the end and the feeling expressed.",
+ o:["Declarative","Interrogative","Imperative","Exclamatory"],c:3,
+ e:"An Exclamatory sentence expresses strong emotion (surprise, joy, anger) and ends with '!'. 'What a beautiful flower!' expresses admiration. It starts with 'What' or 'How' and ends with '!'",
+ t:"4 types: D=Declare (.), I=Interrogate (?), Im=Imperative (command), E=Exclaim (!). 'DIIE' – or remember by the PUNCTUATION mark!"},
+
+{s:"english",sn:"English",
+ q:"The synonym of 'brave' is:",
+ qt:"The synonym of 'brave' is:",
+ si:"Synonym means a word with the SAME or similar meaning.",
+ o:["cowardly","fearful","courageous","weak"],c:2,
+ e:"'Courageous' means brave, bold, fearless – same meaning. 'Cowardly' and 'fearful' are antonyms (opposites) of brave. Synonyms of brave: courageous, bold, daring, valiant.",
+ t:"BRAVE = COURAGEOUS = BOLD = DARING = VALIANT. Think of a superhero: Batman is Brave/Courageous/Bold/Daring – all the same!"},
+
+// ── CHILD DEVELOPMENT (15) ────────────────────────────────────────────────────
+{s:"child",sn:"बाल विकास",
+ q:"पिआजेच्या मते, मूल जेव्हा वस्तू डोळ्यांसमोर नसली तरी ती अस्तित्वात आहे हे समजते, त्याला काय म्हणतात?",
+ qt:"According to Piaget, the ability to understand that objects still exist even when out of sight is called?",
+ si:"हे साधारण 8-9 महिन्याच्या मुलांमध्ये विकसित होते.",
+ o:["अभिनय (Imitation)","वस्तू स्थायित्व (Object Permanence)","केंद्रीकरण (Centration)","संरक्षण (Conservation)"],c:1,
+ e:"Object Permanence (वस्तू स्थायित्व) म्हणजे वस्तू दिसत नसली तरी ती अस्तित्वात आहे हे जाणण्याची क्षमता. पिआजेच्या Sensorimotor Stage (0-2 वर्षे) मध्ये हे विकसित होते.",
+ t:"Object = वस्तू, Permanent = कायम. 'डोळ्याआड म्हणजे अस्तित्वहीन नाही' हे 8 महिन्यांत कळते. Peek-a-Boo खेळाशी लक्षात ठेवा!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"पिआजेच्या संज्ञानात्मक विकासाच्या कोणत्या अवस्थेत मूल 'Conservation' (संरक्षण) समजण्यास सुरुवात करते?",
+ qt:"In which of Piaget's stages does a child begin to understand 'Conservation'?",
+ si:"Conservation म्हणजे आकार बदलला तरी प्रमाण सारखेच राहते हे समजणे.",
+ o:["Sensorimotor (0-2 वर्षे)","Preoperational (2-7 वर्षे)","Concrete Operational (7-11 वर्षे)","Formal Operational (11+ वर्षे)"],c:2,
+ e:"Concrete Operational Stage (7-11 वर्षे) मध्ये मूल Conservation, Reversibility, और Classification समजू लागते. उदा: लांब व रुंद ग्लासात समान पाणी आहे हे समजणे.",
+ t:"Piaget's 4 Stages: S-P-C-F (Sensori, Pre, Concrete, Formal) = 'Smart People Create Futures'! Conservation = Concrete stage (7-11)."},
+
+{s:"child",sn:"बाल विकास",
+ q:"वायगोत्स्कीच्या 'ZPD' (Zone of Proximal Development) चा अर्थ काय आहे?",
+ qt:"What does Vygotsky's ZPD (Zone of Proximal Development) mean?",
+ si:"ZPD म्हणजे मूल स्वतः जे करू शकत नाही, पण मदतीने जे करू शकते तो विकासाचा टप्पा.",
+ o:["मूल स्वतंत्रपणे करू शकतो तो भाग","मदतीने करू शकतो पण स्वतः नाही तो भाग","मूल कधीच करू शकत नाही तो भाग","आधीच शिकलेला भाग"],c:1,
+ e:"ZPD हा 'स्वतः करण्याची पातळी' आणि 'मार्गदर्शनाने करण्याची पातळी' यांमधील अंतर आहे. शिक्षक या भागात Scaffolding करून मुलाला मदत करतो.",
+ t:"ZPD = 'मला मदत हवी आहे पण शिकू शकतो!' Think: ZPD = Zone where teaching works best. Teacher's job = fill the GAP in ZPD!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"बुद्धिमत्ता भाग (IQ) मोजण्याचे सूत्र कोणते?",
+ qt:"What is the formula for calculating Intelligence Quotient (IQ)?",
+ si:"IQ = मानसिक वय / शरीराचे वय × 100",
+ o:["(CA/MA) × 100","(MA/CA) × 100","(MA+CA) × 100","(MA-CA) × 100"],c:1,
+ e:"IQ = (Mental Age / Chronological Age) × 100. सामान्य IQ 90-110 मध्ये असतो. MA=CA असेल तर IQ=100. हे सूत्र Stern यांनी दिले, Binet-Simon Scale वर आधारित.",
+ t:"IQ = MA/CA × 100. लक्षात ठेवा: 'Mental OVER Chronological' – मानसिक वय वर (चिल्हाण्यावर), शरीराचे वय खाली (भाजकात)!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"'Scaffolding' संकल्पना कोणत्या मानसशास्त्रज्ञाशी संबंधित आहे?",
+ qt:"The concept of 'Scaffolding' in education is associated with which psychologist?",
+ si:"Scaffolding म्हणजे इमारत बांधताना लावली जाणारी तात्पुरती आधार रचना – शिक्षणातही असेच सहाय्य.",
+ o:["Piaget","Skinner","Vygotsky","Bandura"],c:2,
+ e:"Vygotsky ने Scaffolding ही संकल्पना दिली जी ZPD शी संबंधित आहे. यात More Knowledgeable Other (MKO) – शिक्षक/पालक – मुलाला जसजसे शिकते तसतसे आधार कमी करतो.",
+ t:"Vygotsky = Social Learning + ZPD + Scaffolding. 'V for Vygotsky = V for Village (social support)'. Piaget = individual development. Vygotsky = social!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"मास्लोच्या गरजांच्या पिरॅमिडमध्ये सर्वात मूलभूत (खालची) गरज कोणती?",
+ qt:"In Maslow's Hierarchy of Needs, which is the most basic (bottom) need?",
+ si:"जगण्यासाठी सर्वात आवश्यक गरजा सर्वात खाली असतात.",
+ o:["सुरक्षिततेच्या गरजा","आत्म-साक्षात्काराच्या गरजा","शारीरिक गरजा","प्रेम व आपलेपणाच्या गरजा"],c:2,
+ e:"Maslow च्या पिरॅमिडमध्ये सर्वात खाली Physiological Needs (शारीरिक गरजा) आहेत – अन्न, पाणी, झोप, श्वास. या पूर्ण झाल्यावरच इतर गरजा निर्माण होतात.",
+ t:"Maslow's pyramid bottom to top: Physiological→Safety→Love→Esteem→Self-Actualization. 'Please Send Love Every Saturday' – P,S,L,E,S!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"'समावेशक शिक्षण' (Inclusive Education) म्हणजे काय?",
+ qt:"What does 'Inclusive Education' mean?",
+ si:"सर्व मुलांना – कोणत्याही विशेष गरजा असोत – एकाच वर्गात शिक्षण देणे.",
+ o:["फक्त हुशार मुलांसाठी शिक्षण","अपंग मुलांसाठी वेगळ्या शाळा","सर्व मुलांना एकत्र सामान्य शाळेत शिक्षण","श्रीमंत मुलांसाठी शिक्षण"],c:2,
+ e:"Inclusive Education मध्ये विशेष गरजा असलेल्या (CWSN – Children With Special Needs) आणि सामान्य मुलांना एकाच वर्गात शिकवले जाते. SSA (सर्व शिक्षा अभियान) यावर जोर देतो.",
+ t:"Inclusive = सर्वांना सामील करा! 'Include everyone in ONE classroom'. RTE 2009 सुद्धा 6-14 वयोगटातील सर्व मुलांसाठी आहे – Inclusive!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"पावलोव्हच्या प्रयोगात कुत्र्याला जेव्हा घंटा वाजवून अन्न दिले तेव्हा कुत्रा घंटा वाजल्यावरच लाळ गाळू लागला. या प्रकारच्या अधिगमाला काय म्हणतात?",
+ qt:"In Pavlov's experiment, the dog salivated at the bell alone. This type of learning is called?",
+ si:"हे अधिगम उद्दीपन (stimulus) आणि प्रतिसाद (response) जोडण्यावर आधारित आहे.",
+ o:["क्रियाप्रसूत अनुबंधन","अभिज्ञानात्मक अधिगम","अभिज्ञात अनुबंधन (Classical Conditioning)","अवलोकन अधिगम"],c:2,
+ e:"Pavlov ने Classical Conditioning (अभिज्ञात अनुबंधन) शोधला. Neutral Stimulus (घंटा) + Unconditioned Stimulus (अन्न) → Conditioned Response (लाळ). UCS→UCR, NS+UCS→CS→CR.",
+ t:"Pavlov = Classical Conditioning = BELL + FOOD = DROOL. 'Pavlov's dog heard a BELL and thought of FOOD' – associate two stimuli together!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"'बहुबुद्धिमत्ता सिद्धांत' (Theory of Multiple Intelligences) कोणी मांडला?",
+ qt:"Who proposed the 'Theory of Multiple Intelligences'?",
+ si:"या सिद्धांतात बुद्धिमत्तेचे 8 प्रकार सांगितले आहेत.",
+ o:["Piaget","Howard Gardner","Vygotsky","Binet"],c:1,
+ e:"Howard Gardner ने 1983 मध्ये Multiple Intelligences सिद्धांत मांडला. 8 बुद्धिमत्ता: Linguistic, Logical-Mathematical, Spatial, Musical, Bodily-Kinesthetic, Interpersonal, Intrapersonal, Naturalistic.",
+ t:"Gardner = 8 Intelligences. 'LL SMBI-N': Linguistic, Logical, Spatial, Musical, Bodily, Interpersonal, Intrapersonal, Naturalistic. Gardner = Garden of Multiple talents!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"RTE (Right to Education) अधिनियम 2009 नुसार कोणत्या वयोगटातील मुलांना मोफत आणि सक्तीचे शिक्षण मिळते?",
+ qt:"Under RTE Act 2009, children of which age group get free and compulsory education?",
+ si:"RTE = Right To Education. हे एक मूलभूत अधिकार आहे.",
+ o:["0 ते 6 वर्षे","6 ते 14 वर्षे","5 ते 15 वर्षे","7 ते 16 वर्षे"],c:1,
+ e:"RTE Act 2009 अन्वये 6 ते 14 वर्षे वयोगटातील सर्व मुलांना मोफत (free) आणि सक्तीचे (compulsory) शिक्षण हा मूलभूत अधिकार आहे. हा Article 21A अंतर्गत येतो.",
+ t:"RTE = 6 to 14 years. लक्षात ठेवा: 6 × 14 = 84 → 2009 - 84 = 1925 नाही, पण 6-14 लक्षात ठेवा! 'Class 1 ते Class 8 = 6 te 14 varsha'"},
+
+{s:"child",sn:"बाल विकास",
+ q:"'Operant Conditioning' (क्रियाप्रसूत अनुबंधन) कोणत्या मानसशास्त्रज्ञाने मांडले?",
+ qt:"Who developed 'Operant Conditioning'?",
+ si:"या सिद्धांतात बक्षीस आणि शिक्षेद्वारे वर्तन बदलले जाते.",
+ o:["Pavlov","Watson","B.F. Skinner","Bandura"],c:2,
+ e:"B.F. Skinner ने Operant Conditioning मांडले. Reinforcement (बक्षीस) वर्तन वाढवते, Punishment (शिक्षा) वर्तन कमी करते. Skinner Box प्रयोगात उंदीर आणि कबूतर वापरले.",
+ t:"Skinner = Operant Conditioning = REWARD & PUNISHMENT. 'Skinner OPERATED a box to train animals with REWARDS'. Pavlov=Bell, Skinner=Box!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"मुलाचा सर्वांगीण विकास (Holistic Development) कशाशी संबंधित आहे?",
+ qt:"Holistic Development of a child refers to development in which areas?",
+ si:"सर्वांगीण म्हणजे सर्व बाजूंनी – शरीर, मन, भावना, समाज.",
+ o:["फक्त शारीरिक विकास","फक्त बौद्धिक विकास","शारीरिक, मानसिक, सामाजिक, भावनिक सर्व विकास","फक्त भाषिक विकास"],c:2,
+ e:"Holistic Development म्हणजे मुलाचा शारीरिक (Physical), मानसिक (Cognitive), भावनिक (Emotional), सामाजिक (Social) आणि भाषिक (Language) अशा सर्व क्षेत्रांत समतोल विकास.",
+ t:"Holistic = WHOLE (संपूर्ण). PCES: Physical, Cognitive, Emotional, Social – हे चारही मिळून Holistic! 'PCES = Physcially Complete, Emotionally Smart'"},
+
+{s:"child",sn:"बाल विकास",
+ q:"'Formative Assessment' (रचनात्मक मूल्यमापन) केव्हा केले जाते?",
+ qt:"When is 'Formative Assessment' conducted?",
+ si:"Formative = शिकण्याच्या प्रक्रियेदरम्यान. Summative = शेवटी.",
+ o:["शैक्षणिक वर्षाच्या अखेरीस","शिकवण्याच्या प्रक्रियेदरम्यान","प्रवेश परीक्षेच्या वेळी","फक्त वार्षिक परीक्षेत"],c:1,
+ e:"Formative Assessment शिकवण्याच्या प्रक्रियेदरम्यान (during learning) केले जाते. तोंडी प्रश्न, गृहपाठ, सहाध्यायी मूल्यमापन, निरीक्षण – हे सर्व Formative आहे. Summative = Final exam.",
+ t:"Formative = FORMING (चालू असताना). Summative = SUM UP (शेवटी). 'F' for 'Frequent' checkups during learning. 'S' for 'Summary' at the end!"},
+
+{s:"child",sn:"बाल विकास",
+ q:"मुलांच्या विकासात 'अनुवांशिकता' (Heredity) आणि 'पर्यावरण' (Environment) यांचे महत्त्व आहे. या संकल्पनेला काय म्हणतात?",
+ qt:"The debate about the role of 'Heredity' vs 'Environment' in child development is called:",
+ si:"हे दोन घटक मुलाच्या विकासावर एकत्र परिणाम करतात.",
+ o:["Nature only","Nurture only","Nature vs Nurture","Piaget's Theory"],c:2,
+ e:"'Nature vs Nurture' हा मानसशास्त्रातील मूलभूत वाद आहे. Nature = अनुवांशिक (genes). Nurture = पर्यावरण (कुटुंब, समाज, शाळा). आजचे मत: दोन्हींचा एकत्र परिणाम.",
+ t:"Nature (जन्मजात) vs Nurture (संगोपन). 'NATURE = what you're BORN with. NURTURE = how you're NURTURED (वाढवले)'. Both matter equally!"},
+
+// ── SOCIAL SCIENCE (10) ───────────────────────────────────────────────────────
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"महाराष्ट्राची राजधानी कोणती आहे?",
+ qt:"What is the capital of Maharashtra?",
+ si:"राजधानी म्हणजे सरकारचे मुख्य कार्यालय असलेले शहर.",
+ o:["पुणे","नागपूर","मुंबई","औरंगाबाद"],c:2,
+ e:"महाराष्ट्राची राजधानी मुंबई आहे. नागपूर हे हिवाळी राजधानी (Winter Capital) आहे. पुणे हे 'सांस्कृतिक राजधानी' म्हणून ओळखले जाते. महाराष्ट्राची स्थापना 1 मे 1960 रोजी झाली.",
+ t:"Mumbai = Maharashtra Capital. 'M for Mumbai, M for Maharashtra'. नागपूर = हिवाळी राजधानी. 1 मे = महाराष्ट्र दिन!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"भारताचे राष्ट्रीय प्रतीक कोणते आहे?",
+ qt:"What is the national emblem of India?",
+ si:"राष्ट्रीय प्रतीक = जे सरकारी कागदपत्रांवर छापलेले असते.",
+ o:["राष्ट्रीय ध्वज","अशोक स्तंभ","राष्ट्रगान","राष्ट्रीय फूल"],c:1,
+ e:"भारताचे राष्ट्रीय प्रतीक (National Emblem) 'अशोक स्तंभ' (Lion Capital of Ashoka) आहे. हे सारनाथ येथील अशोकस्तंभावरून घेतले असून 26 जानेवारी 1950 पासून अधिकृत आहे. यावर 'सत्यमेव जयते' लिहिलेले आहे.",
+ t:"National Emblem = Ashoka Stambha = Lion Capital. 'सत्यमेव जयते' = Truth Alone Triumphs. सारनाथ (Sarnath) + सिंह (Lion) = राष्ट्रीय प्रतीक!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"भारतीय राज्यघटना कधी अमलात आली?",
+ qt:"When did the Indian Constitution come into effect?",
+ si:"हा दिवस दरवर्षी एक महत्त्वाचा राष्ट्रीय सण म्हणून साजरा केला जातो.",
+ o:["15 ऑगस्ट 1947","26 जानेवारी 1950","26 नोव्हेंबर 1949","2 ऑक्टोबर 1950"],c:1,
+ e:"भारतीय राज्यघटना 26 जानेवारी 1950 रोजी अमलात आली. म्हणून 26 जानेवारी हा 'प्रजासत्ताक दिन' (Republic Day) म्हणून साजरा केला जातो. राज्यघटना 26 नोव्हेंबर 1949 रोजी स्वीकारली गेली होती.",
+ t:"26 Jan 1950 = Republic Day = Constitution Day. '26/1 = 26 January'. 15 Aug = Independence Day (1947). 26 Nov = Constitution Adoption Day!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"महात्मा गांधींनी 'दांडी यात्रा' (Salt March) केव्हा सुरू केली?",
+ qt:"When did Mahatma Gandhi begin the 'Dandi March' (Salt March)?",
+ si:"मिठावरील ब्रिटिश कर विरोधात ही ऐतिहासिक यात्रा काढली गेली.",
+ o:["1920","1930","1942","1947"],c:1,
+ e:"महात्मा गांधींनी 12 मार्च 1930 रोजी साबरमती आश्रमातून 78 अनुयायांसह दांडी यात्रा सुरू केली. 6 एप्रिल 1930 रोजी दांडी येथे मीठ बनवून मीठ कायदा मोडला. यामुळे Civil Disobedience Movement सुरू झाली.",
+ t:"Dandi March = 1930. '1930 = Salt'. 12 March → 6 April = 24 days march. 'Gandhi + Salt = 1930'. 1920 = Non-Cooperation, 1942 = Quit India!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"पंचायती राज व्यवस्थेत सर्वात खालची (ग्रामीण) पातळी कोणती आहे?",
+ qt:"In the Panchayati Raj system, what is the lowest (rural) level?",
+ si:"पंचायती राज म्हणजे स्थानिक स्वराज्य संस्था – तीन स्तरांची रचना.",
+ o:["जिल्हा परिषद","पंचायत समिती","ग्रामपंचायत","नगरपालिका"],c:2,
+ e:"पंचायती राज त्रिस्तरीय आहे: 1) ग्रामपंचायत (गाव), 2) पंचायत समिती (तालुका), 3) जिल्हा परिषद (जिल्हा). ग्रामपंचायत सर्वात खाली आणि ग्रामीण पातळीवर काम करते.",
+ t:"Panchayati Raj: GPD = Gram Panchayat (bottom) → Panchayat Samiti → District Panchayat (top). 'Ground-level = Gram Panchayat' – G for Ground, G for Gram!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"भारताची सर्वात मोठी नदी कोणती आहे?",
+ qt:"Which is the longest river in India?",
+ si:"ही नदी भारताच्या उत्तरेकडून वाहते आणि बंगालच्या उपसागरात मिळते.",
+ o:["यमुना","गोदावरी","गंगा","कृष्णा"],c:2,
+ e:"गंगा (Ganga) ही भारताची सर्वात मोठी नदी आहे (2525 km). ती हिमालयातून उगम पावते आणि बंगालच्या उपसागरात विलीन होते. गोदावरी ही दक्षिण भारतातील सर्वात मोठी नदी आहे.",
+ t:"भारतातील सर्वात मोठ्या नद्या: गंगा (2525km) > सिंधू > गोदावरी. 'G for Ganga = Greatest river'. महाराष्ट्रातील सर्वात मोठी = गोदावरी!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"'सत्याग्रह' या संकल्पनेचे जनक कोण आहेत?",
+ qt:"Who is the founder of the concept of 'Satyagraha'?",
+ si:"सत्य + आग्रह = सत्याग्रह. सत्याचा आग्रह धरणे.",
+ o:["नेहरू","सुभाषचंद्र बोस","महात्मा गांधी","बाळ गंगाधर टिळक"],c:2,
+ e:"महात्मा गांधींनी सत्याग्रह (Satyagraha) ही अहिंसक प्रतिकाराची पद्धत विकसित केली. सत्य = Truth, आग्रह = Insistence. प्रथम दक्षिण आफ्रिकेत (1906) वापरला. भारतात चंपारण (1917) पासून.",
+ t:"सत्याग्रह = Gandhi's weapon. 'सत्य (Truth) + आग्रह (Insistence) = Satyagraha'. Gandhi's 3 weapons: Satyagraha, Non-Violence (Ahimsa), Civil Disobedience!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"'थंड हवामान' असलेल्या महाराष्ट्रातील पर्यटन ठिकाणाचे उदाहरण कोणते?",
+ qt:"Which is a hill station (थंड ठिकाण) in Maharashtra?",
+ si:"पर्वतावर असल्यामुळे हे ठिकाण थंड असते.",
+ o:["मुंबई","नागपूर","महाबळेश्वर","अकोला"],c:2,
+ e:"महाबळेश्वर हे महाराष्ट्रातील प्रसिद्ध थंड हवामान ठिकाण (Hill Station) आहे. सातारा जिल्ह्यात, सह्याद्री पर्वतरांगेत स्थित. माथेरान, लोणावळा, खंडाळा हीही महाराष्ट्रातील Hill Stations आहेत.",
+ t:"Maharashtra Hill Stations: Mahabaleshwar, Matheran, Lonavala, Khandala. 'M-M-L-K' → 'Many Mountains Leave you Kool (Cool)'!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"भारताचे पहिले पंतप्रधान कोण होते?",
+ qt:"Who was the first Prime Minister of India?",
+ si:"भारत स्वतंत्र झाल्यावर (1947) पंतप्रधान पदावर कोण होते?",
+ o:["महात्मा गांधी","सरदार वल्लभभाई पटेल","जवाहरलाल नेहरू","डॉ. बाबासाहेब आंबेडकर"],c:2,
+ e:"जवाहरलाल नेहरू हे भारताचे पहिले पंतप्रधान होते (1947-1964). महात्मा गांधी = Father of Nation, पटेल = Iron Man of India (देशाचे एकत्रीकरण), आंबेडकर = राज्यघटनेचे शिल्पकार.",
+ t:"First PM = Nehru. 'N for Nehru = Number One PM'. Father of Nation = Gandhi. Iron Man = Patel. Constitution Father = Ambedkar. N-G-P-A लक्षात ठेवा!"},
+
+{s:"social",sn:"सामाजिक शास्त्र",
+ q:"'विषुववृत्त' (Equator) कोणत्या अक्षांशावर असते?",
+ qt:"At which latitude is the Equator located?",
+ si:"विषुववृत्त पृथ्वीला दोन समान भागांत विभाजित करते.",
+ o:["90° उत्तर","0°","45° उत्तर","23.5° उत्तर"],c:1,
+ e:"विषुववृत्त (Equator) 0° अक्षांशावर असते आणि पृथ्वीला उत्तर (Northern) आणि दक्षिण (Southern) गोलार्धात विभाजित करते. उत्तर ध्रुव = 90°N, दक्षिण ध्रुव = 90°S, कर्कवृत्त = 23.5°N.",
+ t:"Equator = 0° (Zero degree). 'E for Equator = 0° = Earth's belt/waist'. Tropic of Cancer = 23.5°N (भारतातून जाते!). Arctic = 66.5°N."}
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let questions = [...BANK];
+let cur = 0;
+let answers = {};
+let skipped = {};
+let timerSec = 3*60*60;
+let timerInt = null;
+
+// ── HISTORY ──────────────────────────────────────────────────────────────────
+function getHist(){try{return JSON.parse(localStorage.getItem('msce_h')||'[]')}catch{return[]}}
+function saveHist(e){try{const h=getHist();h.unshift(e);localStorage.setItem('msce_h',JSON.stringify(h.slice(0,5)))}catch{}}
+
+window.onload=()=>{
+  const h=getHist();
+  if(h.length){
+    document.getElementById('hist-sec').style.display='block';
+    document.getElementById('hist-list').innerHTML=h.map(x=>`
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);flex-wrap:wrap;gap:8px">
+        <div><div style="font-weight:700;font-size:14px">${x.date}</div>
+        <div style="font-size:13px;color:var(--t3)">${x.correct}/${x.total} बरोबर · ${x.pct}% · ${x.time}</div></div>
+        <div style="font-size:22px;font-weight:800;color:${x.pct>=60?'var(--green)':'var(--red)'}">${x.grade}</div>
+      </div>`).join('');
+  }
+};
+
+// ── TIMER ────────────────────────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(timerInt);
+  timerInt=setInterval(()=>{
+    timerSec--;
+    if(timerSec<=0){clearInterval(timerInt);submitExam();return}
+    renderTimer();
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const h=Math.floor(timerSec/3600),m=Math.floor((timerSec%3600)/60),s=timerSec%60;
+  document.getElementById('timer').textContent=`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('timer').className='timer'+(timerSec<600?' warn':'');
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+function startExam(){
+  document.getElementById('sw').style.display='none';
+  document.getElementById('se').style.display='block';
+  buildGrid();
+  showQ(0);
+  startTimer();
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────────────────────
+const LETTERS=['A','B','C','D'];
+const TAGCLS={marathi:'tm',english:'te',child:'tc',social:'ts'};
+const ICONS={marathi:'📗',english:'📘',child:'📕',social:'📙'};
+
+function showQ(idx){
+  cur=idx;
+  const q=questions[idx];
+  const ans=answers[idx];
+  const done=ans!==undefined;
+  const tc=TAGCLS[q.s]||'tm';
+  const expCls=done?(ans===q.c?'cor':'wrg'):'';
+
+  const opts=q.o.map((o,i)=>{
+    let cls='opt';
+    if(done){
+      if(i===q.c)cls+=' cor';
+      else if(i===ans&&ans!==q.c)cls+=' wrg';
+    } else if(ans===i) cls+=' sel';
+    return `<button class="${cls}" onclick="pick(${idx},${i})" ${done?'disabled':''}><span class="ol">${LETTERS[i]}</span><span>${o}</span></button>`;
+  }).join('');
+
+  document.getElementById('qa').innerHTML=`
+    <div class="qcard">
+      <div class="qhdr">
+        <div class="qnum">${idx+1}</div>
+        <div style="flex:1">
+          <span class="qtag ${tc}">${ICONS[q.s]} ${q.sn}</span>
+          <div class="qtext">${q.q}</div>
+          ${q.qt&&q.s!=='english'?`<div class="qtrans">(${q.qt})</div>`:''}
+          ${q.si?`<div class="qsimple">💡 ${q.si}</div>`:''}
+        </div>
+      </div>
+      <div class="opts">${opts}</div>
+      <div class="expbox ${expCls} ${done?'show':''}">
+        <div class="etitle">${done?(ans===q.c?'✅ बरोबर!':'❌ चुकीचे'):''}</div>
+        <div class="etext">
+          ${done&&ans!==q.c?`<strong>बरोबर उत्तर: ${LETTERS[q.c]}. ${q.o[q.c]}</strong><br><br>`:''}
+          ${q.e}
+        </div>
+      </div>
+      <div class="tipbox ${done?'show':''}">
+        <div class="tipttl">💡 लक्षात ठेवण्याची युक्ती</div>
+        <div class="tiptext">${q.t}</div>
+      </div>
+      <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:12px;color:var(--t3)">
+        <span>प्रश्न ${idx+1}/${questions.length} · 2 गुण</span>
+        <span>${done?(ans===q.c?'✅':'❌'):skipped[idx]?'⏭':'○'}</span>
+      </div>
+    </div>`;
+
+  updateGrid();
+  updatePbar();
+  updateMini();
+  document.getElementById('bprev').disabled=idx===0;
+  document.getElementById('bnext').disabled=idx===questions.length-1;
+  document.getElementById('qa').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function pick(qIdx,optIdx){
+  if(answers[qIdx]!==undefined)return;
+  answers[qIdx]=optIdx;
+  delete skipped[qIdx];
+  showQ(qIdx);
+}
+
+function skipQ(){skipped[cur]=true;nav(1);}
+function nav(d){const n=cur+d;if(n>=0&&n<questions.length)showQ(n);}
+function jumpTo(i){showQ(i);}
+
+function jumpSubj(s){
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`[data-s="${s}"]`)?.classList.add('active');
+  if(s==='all'){showQ(cur);return;}
+  const i=questions.findIndex(q=>q.s===s);
+  if(i>=0)showQ(i);
+}
+
+// ── GRID / PROGRESS ───────────────────────────────────────────────────────────
+function buildGrid(){
+  document.getElementById('qgrid').innerHTML=questions.map((_,i)=>
+    `<div class="qdot" id="d${i}" onclick="jumpTo(${i})">${i+1}</div>`).join('');
+}
+function updateGrid(){
+  questions.forEach((_,i)=>{
+    const d=document.getElementById('d'+i);if(!d)return;
+    d.className='qdot';
+    if(i===cur)d.classList.add('cur');
+    else if(answers[i]!==undefined)d.classList.add(answers[i]===questions[i].c?'ok':'bad');
+    else if(skipped[i])d.classList.add('skip');
+  });
+}
+function updatePbar(){
+  const done=Object.keys(answers).length;
+  document.getElementById('pbar').style.width=(done/questions.length*100)+'%';
+}
+function updateMini(){
+  const ok=Object.entries(answers).filter(([i,a])=>+a===questions[+i].c).length;
+  const wr=Object.keys(answers).length-ok;
+  const sk=Object.keys(skipped).length;
+  const lf=questions.length-Object.keys(answers).length-sk;
+  document.getElementById('sc-ok').textContent=ok+' बरोबर';
+  document.getElementById('sc-wr').textContent=wr+' चुकीचे';
+  document.getElementById('sc-sk').textContent=sk+' वगळले';
+  document.getElementById('sc-lf').textContent=Math.max(0,lf)+' बाकी';
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────────
+function confirmSubmit(){
+  const left=questions.length-Object.keys(answers).length;
+  if(left>0&&!confirm(`${left} प्रश्न उत्तर न दिलेले आहेत. तरीही सबमिट करायचे?`))return;
+  submitExam();
+}
+function submitExam(){
+  clearInterval(timerInt);
+  document.getElementById('se').style.display='none';
+  document.getElementById('sr').style.display='block';
+
+  const used=3*3600-timerSec;
+  const th=Math.floor(used/3600),tm=Math.floor((used%3600)/60);
+  const timeStr=th+'h '+tm+'m';
+
+  let ok=0;
+  const ss={};
+  questions.forEach((q,i)=>{
+    if(!ss[q.s])ss[q.s]={name:q.sn,ok:0,tot:0};
+    ss[q.s].tot++;
+    if(answers[i]===q.c){ok++;ss[q.s].ok++;}
+  });
+  const wr=Object.keys(answers).length-ok;
+  const sk=Object.keys(skipped).length;
+  const total=questions.length*2;
+  const earned=ok*2;
+  const pct=Math.round(earned/total*100);
+  const grade=pct>=90?'A+':pct>=75?'A':pct>=60?'B':pct>=45?'C':pct>=33?'D':'F';
+  const emoji=pct>=75?'🎉':pct>=60?'👏':'📚';
+  const msg=pct>=75?'उत्कृष्ट! शाबास!':pct>=60?'छान! अजून सराव करा!':'अधिक अभ्यास करा, तुम्ही करू शकता!';
+
+  saveHist({date:new Date().toLocaleString('en-IN'),correct:ok,total:questions.length,pct,grade,time:timeStr});
+
+  const colrs={marathi:'#e67700',english:'#1565c0',child:'#c2185b',social:'#2e7d32'};
+  const subjHTML=Object.entries(ss).map(([s,st])=>{
+    const p=Math.round(st.ok/st.tot*100);
+    return `<div class="sbrow">
+      <div class="sbname">${st.name}</div>
+      <div class="sbwrap"><div class="sbbar" style="width:${p}%;background:${colrs[s]||'#888'}"></div></div>
+      <div class="sbpct" style="color:${colrs[s]||'#888'}">${p}%</div>
+    </div>`;
+  }).join('');
+
+  const wrongQs=questions.filter((_,i)=>answers[i]!==undefined&&answers[i]!==questions[i].c);
+  const wrongHTML=wrongQs.slice(0,15).map(q=>{
+    const i=questions.indexOf(q);
+    return `<div class="revitem">
+      <div class="riq">Q${i+1}. ${q.q}</div>
+      <div class="rians">
+        ❌ तुमचे उत्तर: ${q.o[answers[i]]}<br>
+        ✅ बरोबर उत्तर: ${q.o[q.c]}
+      </div>
+      <div class="riexp">${q.e}<br><br>💡 <em>${q.t}</em></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('rc').innerHTML=`
+    <div class="rhero">
+      <div style="font-size:54px;margin-bottom:8px">${emoji}</div>
+      <div class="rscore">${pct}%</div>
+      <div style="font-size:15px;opacity:.85">${msg}</div>
+      <div class="rgrade">श्रेणी: ${grade}</div>
+    </div>
+    <div class="rgrid">
+      <div class="rstat"><div class="rval rg">${ok}</div><div class="rlbl">बरोबर</div></div>
+      <div class="rstat"><div class="rval rr">${wr}</div><div class="rlbl">चुकीचे</div></div>
+      <div class="rstat"><div class="rval ry">${sk}</div><div class="rlbl">वगळले</div></div>
+      <div class="rstat"><div class="rval rb">${earned}/${total}</div><div class="rlbl">गुण</div></div>
+      <div class="rstat"><div class="rval" style="color:var(--accent);font-size:18px">${timeStr}</div><div class="rlbl">वेळ</div></div>
+    </div>
+    <div class="subj-bd">
+      <div style="font-weight:700;font-size:14px;margin-bottom:10px">विषयनिहाय कामगिरी</div>
+      ${subjHTML}
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+      <button class="btn-start" onclick="retryExam()" style="padding:12px 28px;font-size:14px">🔄 पुन्हा सराव करा</button>
+      <button class="btn2" onclick="reviewAll()">📖 सर्व उत्तरे पहा</button>
+    </div>
+    ${wrongQs.length?`<div class="stitle2">❌ चुकलेले प्रश्न (${wrongQs.length})</div><div>${wrongHTML}</div>`:'<div style="text-align:center;padding:20px;color:var(--green);font-weight:700;font-size:17px">🎯 सर्व बरोबर! अभिनंदन!</div>'}`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function retryExam(){
+  answers={};skipped={};cur=0;timerSec=3*60*60;
+  document.getElementById('sr').style.display='none';
+  document.getElementById('sw').style.display='block';
+  document.getElementById('timer').textContent='3:00:00';
+}
+function reviewAll(){
+  document.getElementById('sr').style.display='none';
+  document.getElementById('se').style.display='block';
+  buildGrid();showQ(0);updateMini();
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
